@@ -1,8 +1,11 @@
+import logging
 from decimal import Decimal
 
 from transacao_financeira.domain.entities import Transacao
 from transacao_financeira.domain.exceptions import SaldoInsuficienteError
 from transacao_financeira.repository.interfaces import ContaRepository
+
+logger = logging.getLogger(__name__)
 
 
 class TransferenciaService:
@@ -35,8 +38,16 @@ class TransferenciaService:
             origem.debitar(transacao.valor)
             destino.creditar(transacao.valor)
 
-            print(
-                f"Transacao {transacao.correlation_id} efetivada | "
-                f"Origem {origem.numero}: {saldo_antes_origem} -> {origem.saldo} | "
-                f"Destino {destino.numero}: {saldo_antes_destino} -> {destino.saldo}"
+            logger.info(
+                "transferencia_efetivada",
+                extra={
+                    "correlation_id": transacao.correlation_id,
+                    "conta_origem": origem.numero,
+                    "saldo_origem_antes": str(saldo_antes_origem),
+                    "saldo_origem_depois": str(origem.saldo),
+                    "conta_destino": destino.numero,
+                    "saldo_destino_antes": str(saldo_antes_destino),
+                    "saldo_destino_depois": str(destino.saldo),
+                    "valor": str(transacao.valor),
+                },
             )
