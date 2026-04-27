@@ -17,6 +17,7 @@ transacao_financeira/
 ├── tests/
 │   ├── test_transferencia.py
 │   └── test_repository.py
+├── logging_config.py     # Configuração de logging (rich no terminal, JSON em produção)
 └── main.py               # Execução com ThreadPoolExecutor
 ```
 
@@ -51,6 +52,12 @@ pip install -e ".[dev]"
 
 ```bash
 python -m transacao_financeira.main
+```
+
+Por padrão o output usa o formato legível do `rich` com todos os campos de cada transferência. Para obter saída JSON (útil em CI/produção):
+
+```bash
+LOG_FORMAT=json python -m transacao_financeira.main
 ```
 
 ### 5. Rodar os testes
